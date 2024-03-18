@@ -1,0 +1,66 @@
+import random
+
+class Army:
+    def __init__(self, name, units):
+        self.name = name
+        self.units = units
+
+    def attack(self):
+        total_strength = 0
+        for unit in self.units:
+            total_strength += unit.attack()
+        return total_strength
+
+class Unit:
+    def __init__(self, name, strength):
+        self.name = name
+        self.strength = strength
+
+    def attack(self):
+        return random.randint(1, self.strength)
+
+def main():
+    print("Welcome to the World War II Simulation Game!")
+
+    # Define units for Allies and Axis powers
+    allies_units = [
+        Unit("Infantry", 5),
+        Unit("Air Force", 8),
+        Unit("Navy", 7)
+    ]
+
+    axis_units = [
+        Unit("Infantry", 5),
+        Unit("Air Force", 8),
+        Unit("Navy", 7)
+    ]
+
+    allies_army = Army("Allies", allies_units)
+    axis_army = Army("Axis", axis_units)
+
+    print("Let the battle begin!")
+    print(f"{allies_army.name} vs {axis_army.name}")
+
+    while allies_army.units and axis_army.units:
+        axis_damage = allies_army.attack()
+        allies_damage = axis_army.attack()
+
+        for _ in range(min(len(allies_army.units), axis_damage)):
+            allies_army.units.pop(0)
+
+        for _ in range(min(len(axis_army.units), allies_damage)):
+            axis_army.units.pop(0)
+
+        print(f"{allies_army.name} units: {len(allies_army.units)}")
+        print(f"{axis_army.name} units: {len(axis_army.units)}")
+        print()
+
+    if len(allies_army.units) > len(axis_army.units):
+        print(f"{allies_army.name} wins!")
+    elif len(axis_army.units) > len(allies_army.units):
+        print(f"{axis_army.name} wins!")
+    else:
+        print("It's a draw!")
+
+if __name__ == "__main__":
+    main()
